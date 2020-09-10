@@ -13,10 +13,13 @@
  *= require_tree .
  *= require_self
  */
-@import "../node_modules/bootstrap/scss/bootstrap";
 
-css
+
 
 table#movies th.hilite{
     background-color: yellow;
+}
+
+table#movies th.headerbackground{
+    background-color: #FFC502; 
 }
