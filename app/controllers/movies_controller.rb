@@ -17,8 +17,10 @@ class MoviesController < ApplicationController
     @highlight = params[:sort_by]
     
     @all_ratings = Movie.get_ratings
-    
-    
+  
+    if params[:ratings] #ratings is a hash created by the checkboxes such that params will include as one if its values :ratings=>{"G"=>"1", "R"=>"1"}
+      @movies = Movie.with_ratings(params[:ratings])
+    end
   end
 
   def new
