@@ -15,7 +15,10 @@ class MoviesController < ApplicationController
     #@movies = Movie.all
     @movies = Movie.all.order(params[:sort_by])
     @highlight = params[:sort_by]
-   
+    
+    @all_ratings = Movie.get_ratings
+    
+    
   end
 
   def new
