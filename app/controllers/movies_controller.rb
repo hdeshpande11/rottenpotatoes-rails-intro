@@ -12,16 +12,40 @@ class MoviesController < ApplicationController
   
 
   def index
-    #Movie.dedupe
-    #@movies = Movie.all
-    @movies = Movie.all.order(params[:sort_by]).uniq
-    @highlight = params[:sort_by]
+
     
     @all_ratings = Movie.get_ratings
+    redirect = false
+    
+    logger.debug(session.inspect)
+    
+
+      @highlight = params[:sort_by]
+     session[:sort_by] = @highlight
+   
+    
+    if params[:ratings]
+       @ratings_fromsort = params[:ratings] 
+       session[:ratings] = @ratings_fromsort
+    end
   
-   if params[:ratings] #ratings is a hash created by the checkboxes such that params will include as one if its values :ratings=>{"G"=>"1", "R"=>"1"}
-      @movies = Movie.with_ratings(params[:ratings]).order(params[:sort_by]).uniq
+    
+    if !@ratings_fromsort
+       @ratings_fromsort = Hash.new
+       @ratings_fromsort.each{|elem| @ratings_fromsort.store(elem,1)}
+    end
+    
+    if redirect
+      flash.keep
+      redirect_to movies_path, :sortby => @highlight, :ratings => @ratings_fromsort
+    end
+   
+   if params[:ratings]
+     @movies = Movie.with_ratings(@ratings_fromsort).order(params[:sort_by]).uniq
+   else
+     @movies = Movie.all.order(params[:sort_by]).uniq
    end
+   
    
   end
 

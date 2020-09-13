@@ -14,4 +14,7 @@ class Movie < ActiveRecord::Base
  def self.with_ratings(ratings)
   self.all.where(:rating => ratings.keys)   #only need keys need to be checked since checkboxes not selected will not show up in the ratings hash
  end        
+ 
+
+ 
 end
