@@ -12,7 +12,7 @@ class MoviesController < ApplicationController
   
 
   def index
-    Movie.dedupe
+    #Movie.dedupe
     #@movies = Movie.all
     @movies = Movie.all.order(params[:sort_by]).uniq
     @highlight = params[:sort_by]
