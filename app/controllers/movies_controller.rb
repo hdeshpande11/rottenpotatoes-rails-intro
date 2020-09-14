@@ -13,38 +13,26 @@ class MoviesController < ApplicationController
 
   def index
 
-    
     @all_ratings = Movie.get_ratings
-    redirect = false
-    
-    logger.debug(session.inspect)
-    
-
-      @highlight = params[:sort_by]
-     session[:sort_by] = @highlight
-   
-    
-    if params[:ratings]
-       @ratings_fromsort = params[:ratings] 
-       session[:ratings] = @ratings_fromsort
+    @highlight = params[:sort_by]
+    @checked_ratings = params[:ratings] || session[:ratings] || {}
+    sort_var = params[:sort_by] || session[:sort_by]
+ 
+    if @checked_ratings == {}
+      @checked_ratings = Hash[@all_ratings.map {|rating| [rating,rating]}]
     end
-  
-    
-    if !@ratings_fromsort
-       @ratings_fromsort = Hash.new
-       @ratings_fromsort.each{|elem| @ratings_fromsort.store(elem,1)}
-    end
-    
-    if redirect
+ 
+    if session[:sort_by] != params[:sort_by] or session[:ratings] != params[:ratings]
+      session[:sort_by] = sort_var
+      session[:ratings] = @checked_ratings
       flash.keep
-      redirect_to movies_path, :sortby => @highlight, :ratings => @ratings_fromsort
+      return redirect_to :sort_by => sort_var, :ratings => @checked_ratings
     end
+    @movies = Movie.all.where(:rating => @checked_ratings.keys).order(params[:sort_by]).uniq
    
-   if params[:ratings]
-     @movies = Movie.with_ratings(@ratings_fromsort).order(params[:sort_by]).uniq
-   else
-     @movies = Movie.all.order(params[:sort_by]).uniq
-   end
+
+########
+  
    
    
   end
