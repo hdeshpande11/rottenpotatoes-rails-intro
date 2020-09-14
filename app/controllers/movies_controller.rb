@@ -28,7 +28,7 @@ class MoviesController < ApplicationController
       flash.keep
       return redirect_to :sort_by => sort_var, :ratings => @checked_ratings
     end
-    @movies = Movie.all.where(:rating => @checked_ratings.keys).order(params[:sort_by]).uniq
+    @movies = Movie.with_ratings(@checked_ratings).order(params[:sort_by]).uniq
    
 
 ########
