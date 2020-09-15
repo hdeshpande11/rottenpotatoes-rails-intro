@@ -1,0 +1,2 @@
+Heroku app URL : https://shrouded-cove-65957.herokuapp.com/
+GitHub URL: https://github.com/hdeshpande11/rottenpotatoes-rails-intro.git
